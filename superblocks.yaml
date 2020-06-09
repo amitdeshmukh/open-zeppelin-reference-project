@@ -1,0 +1,33 @@
+version: 1
+
+jobs:
+  test:
+    image: node:12
+    script:
+      - npm install
+      - npm run test
+
+  # This job signs the transactions directly in the runner using a mnemonic 12 and still
+  # allow you to keep track of all the details of the deployment inside the platform. 
+  deploy_to_rinkeby_automatic:
+    image: node:12
+    
+    # Here we are flagging to the system that this is an Ethereum deployment job. In this way, Superblocks will automatically link the job with 
+    # the deployment associated with it
+    type:
+        name: ethereum/deploy
+    script:
+        - npm install
+        - npx openzeppelin compile --no-interactive
+        - npm run deploy
+
+stages:
+  - build:
+      jobs:
+        - test
+  - deploy_to_testnets:
+      jobs:
+        - deploy_to_rinkeby_automatic:
+            filters:
+              only: 
+                - master

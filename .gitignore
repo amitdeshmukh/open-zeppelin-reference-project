@@ -1,0 +1,8 @@
+/build/*
+/zos.dev*
+.zos*
+.zos.session
+.openzeppelin/.session
+.openzeppelin/dev-*
+node_modules
+.session
